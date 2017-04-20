@@ -97,6 +97,7 @@ void powieksz_swiat_w_strukturze(informacje *swiat, int nwiersz, int nkol)
     *swiat = pswiat;
 
     return;
+    
 }
 
 void usun_swiat(char ***tablica, int wiersz)
