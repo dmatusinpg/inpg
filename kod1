@@ -1,0 +1,35 @@
+# inpg
+Repozytorium na zajęcia INPG
+
+#ifndef array
+#define array
+
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct informacje
+{
+    char **tablica;
+    int wiersz;
+    int kolumna;
+
+}informacje;
+
+char **stworz_swiat(int wiersz, int kol);
+void stworz_swiat_w_strukturze (informacje *swiat);
+
+void powieksz_swiat(char*** tablica, int wiersz, int kol, int pwiersz, int pkol);
+void powieksz_swiat_w_strukturze (informacje *swiat, int nwiersz, int nkol);
+
+void usun_swiat(char*** tablica, int wiersz);
+void usun_swiat_w_strukturze(informacje *swiat);
+
+void wartosc_komorki(informacje swiat, int wiersz, int kol);
+void zmien_wartosc(informacje *swiat, int wiersz, int kol, char element);
+void wypisz_swiat(informacje swiat);
+void wczytaj_dane(informacje * swiat);
+void zapisz_dane(FILE* plik, informacje swiat);
+void czysc_ekran(void);
+
+
+#endif
