@@ -1,0 +1,89 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <conio.h>
+#include <windows.h>
+#include "generation.h"
+#include "array.h"
+
+void decyzja_o_zamianie_pokolen(informacje stare_pokolenie, informacje *nowe_pokolenie)
+{
+    int p1, p2, p3, p4; /*p1 i p2 to petle obslugujace nasza tablice (swiat), natomiast p3 i p4 sa wewnetrznymi petlami zliczajacymi sasiadow*/
+    int sasiedzi; /*liczba sasiadow*/
+
+    informacje pomocnicza = *nowe_pokolenie;
+
+    for(p1 = 1; p1 < (stare_pokolenie.wiersz - 1); p1++)
+
+    {
+        for(p2 = 1; p2 < (stare_pokolenie.kolumna - 1); p2++)
+
+        {
+            sasiedzi = 0;
+
+            if(stare_pokolenie.tablica[p1][p2] == '^')
+
+            {
+                for(p3 = (p1 - 1); p3 < (p1 + 2); p3++)
+
+                {
+                    for(p4 = (p2 - 1); p4 < (p2 + 2); p4++)
+
+                    {
+                        if(stare_pokolenie.tablica[p3][p4] == '^')
+                            sasiedzi = sasiedzi + 1;
+                    }
+
+                }
+
+                sasiedzi = sasiedzi - 1; /*w petli zliczamy takze komorke, ktorej liczbe sasiadow badamy, wiec nalezy odjac jeden od ogolnej liczby*/
+
+
+                if(sasiedzi == 1 || sasiedzi == 0 || sasiedzi > 3)
+                    pomocnicza.tablica[p1][p2] = ' ';
+
+                else
+                    pomocnicza.tablica[p1][p2] = stare_pokolenie.tablica[p1][p2];
+
+            }
+
+            if(stare_pokolenie.tablica[p1][p2] == ' ')
+
+            {
+                for(p3 = (p1 - 1); p3 < (p1 + 2); p3++)
+
+                {
+                    for(p4 = (p2 - 1); p4 < (p2 + 2); p4++)
+
+                    {
+
+                        if(stare_pokolenie.tablica[p3][p4] == '^')
+                            sasiedzi = sasiedzi + 1;
+                    }
+
+                }
+
+                if(sasiedzi == 3)
+                    pomocnicza.tablica[p1][p2] = '^';
+
+                else
+                    pomocnicza.tablica[p1][p2] = stare_pokolenie.tablica[p1][p2];
+
+            }
+        }
+    }
+
+    *nowe_pokolenie = pomocnicza;
+
+    return;
+}
+
+
+void zamien_pokolenia(informacje *stare_pokolenie, informacje * nowe_pokolenie)
+{
+    informacje pomocnicza = *nowe_pokolenie;
+
+    nowe_pokolenie = stare_pokolenie;
+    *stare_pokolenie = pomocnicza;
+
+    return;
+}
