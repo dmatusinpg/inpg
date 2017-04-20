@@ -5,6 +5,8 @@
 #include "generation.h"
 #include "array.h"
 
+b
+
 void decyzja_o_zamianie_pokolen(informacje stare_pokolenie, informacje *nowe_pokolenie)
 {
     int p1, p2, p3, p4; /*p1 i p2 to petle obslugujace nasza tablice (swiat), natomiast p3 i p4 sa wewnetrznymi petlami zliczajacymi sasiadow*/

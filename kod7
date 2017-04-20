@@ -3,6 +3,7 @@
 #include "array.h"
 
 
+hrej
 
 
 
@@ -36,6 +37,7 @@ char **stworz_swiat(int wiersz, int kol)
     }
 
     return tablica;
+
 
 }
 

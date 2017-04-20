@@ -3,6 +3,7 @@ Repozytorium na zajęcia INPG
 
 #ifndef array
 #define array
+aaaa
 
 #include <stdio.h>
 #include <stdlib.h>
