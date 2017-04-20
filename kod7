@@ -1,0 +1,261 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "array.h"
+
+char **stworz_swiat(int wiersz, int kol)
+{
+    char **tablica;
+    int i;
+
+    tablica = NULL;
+
+    tablica = (char**)malloc((wiersz+2) * sizeof(char*));
+
+    if(tablica == NULL)
+    {
+        printf("Blad alokacji wierszy.");
+        return NULL;
+    }
+
+    for(i = 0; i < (wiersz+2); i++)
+    {
+        tablica[i] = (char*)malloc((kol+2) * sizeof(char));
+
+        if(tablica[i] == NULL)
+        {
+            printf("Blad alokacji kolumn.");
+            return NULL;
+        }
+
+    }
+
+    return tablica;
+
+}
+
+void stworz_swiat_w_strukturze (informacje *swiat)
+{
+    informacje pswiat = *swiat; /* tablica pomocnicza*/
+    pswiat.tablica = stworz_swiat((pswiat.wiersz) + 2, (pswiat.kolumna) + 2);
+
+    if(pswiat.tablica == NULL)
+    {
+        printf("Blad alokacji, nie mozna stowrzyc swiata.");
+        pswiat.wiersz = 0;
+        pswiat.kolumna = 0;
+    }
+
+    *swiat = pswiat;
+
+    return;
+}
+
+void powieksz_swiat(char ***tablica, int wiersz, int kol, int nwiersz, int nkol)
+{
+    int i,j;
+    char **ntablica;//nowa tablica o rozmiarze nwiersz x nkol
+    char **ptablica;//tablica pomocnicza, wskaznik na tablice z danymi
+
+    ntablica = stworz_swiat(nwiersz, nkol);
+
+    if(ntablica == NULL)
+    {
+        printf("Brak pamieci na utworzenie nowej tablicy.");
+        return NULL;
+    }
+
+    ptablica = *tablica;
+
+    for(i = 0; i < wiersz; i++)
+    {
+        for(j = i; j < kol; j++)
+        {
+            ntablica[i][j] = ptablica[i][j];
+        }
+
+    }
+
+    usun_swiat(&ptablica, wiersz);
+
+    return;
+
+}
+
+void powieksz_swiat_w_strukturze(informacje *swiat, int nwiersz, int nkol)
+{
+    informacje pswiat = *swiat;
+    powieksz_swiat(&(pswiat.tablica), pswiat.wiersz, pswiat.kolumna, nwiersz, nkol);
+
+    pswiat.wiersz = nwiersz;
+    pswiat.kolumna = nkol;
+    *swiat = pswiat;
+
+    return;
+}
+
+void usun_swiat(char ***tablica, int wiersz)
+{
+    char **wskaznik;//wskaznik pomocniczy
+    int i;
+
+    wskaznik = *tablica;
+
+    for(i = 0; i < wiersz; i++)
+    {
+        free(wskaznik[i]);
+    }
+
+    free(wskaznik);
+
+    *tablica = NULL;
+
+    return;
+}
+
+void usun_swiat_w_strukturze(informacje *swiat)
+{
+    informacje pswiat = *swiat;
+
+    usun_swiat(&pswiat.tablica, pswiat.wiersz);
+    pswiat.wiersz = 0;
+    pswiat.kolumna = 0;
+
+    *swiat = pswiat;
+
+    return;
+}
+
+void wartosc_komorki(informacje swiat, int wiersz, int kol)
+{
+
+    char wartosc;
+
+     if((wiersz > swiat.wiersz) || (kol > swiat.kolumna) || (wiersz > swiat.wiersz && kol > swiat.kolumna))
+     {
+        printf("Zle dane.");
+     }
+
+     else
+     {
+        wartosc = swiat.tablica[wiersz][kol];
+
+        if ((wartosc != ' ') && (wartosc != '^'))
+        {
+            printf("Blad odczytania wartosci komorki.");
+        }
+
+        else
+            printf("%c", wartosc);
+
+     }
+
+     return;
+
+}
+
+void zmien_wartosc(informacje *swiat, int wiersz, int kol, char wartosc)
+{
+    informacje pomocnicza = *swiat;
+
+    if(wiersz > pomocnicza.wiersz || kol > pomocnicza.kolumna || (wiersz > pomocnicza.wiersz && kol > pomocnicza.kolumna))
+     {
+        printf("Zle dane.");
+     }
+
+    if((wartosc != ' ') || (wartosc != '^'))
+    {
+        printf("Nie mozna zmienic wartosci na podana.");
+    }
+
+    else
+        pomocnicza.tablica[wiersz][kol] = wartosc;
+
+    *swiat = pomocnicza;
+
+    return;
+}
+
+void wypisz_swiat(informacje swiat)
+{
+    int i,j;
+
+    for(i = 0; i < swiat.wiersz; i++)
+    {
+        for(j = 0; j < swiat.kolumna; j++)
+        {
+            wartosc_komorki(swiat, i, j);
+        }
+
+        printf("\n");
+    }
+
+    return;
+}
+
+void wczytaj_dane(informacje* swiat)
+{
+    informacje pomocnicza = *swiat;
+    int wiersz, kol;
+    FILE *plik; /*wskaznik plikowy*/
+
+    plik = fopen("wejscie.txt", "r");
+
+    if(plik == NULL)
+    {
+        printf("Nie mozna wczytac danych");
+        exit(EXIT_FAILURE);
+    }
+
+    for(wiersz = 0; wiersz < pomocnicza.wiersz; wiersz ++)
+    {
+        for(kol = 0; kol < pomocnicza.kolumna; kol ++)
+
+            pomocnicza.tablica[wiersz][kol] = ' ';
+    }
+
+    while(feof(plik) == 0)
+    {
+        fscanf(plik, "%i", &wiersz);
+        wiersz++;
+        fscanf(plik, "%i", &kol);
+        kol++;
+        pomocnicza.tablica[kol][wiersz] = '^';
+
+    }
+
+    fclose(plik);
+
+    *swiat = pomocnicza;
+
+    return;
+
+}
+
+void zapisz_dane(FILE* plik, informacje swiat)
+{
+    int i, j;
+    char wartosc = 0;
+
+    for(i = 1; i < (swiat.wiersz) - 1; i++)
+    {
+        for(j = 1; j < (swiat.kolumna) - 1; j++)
+        {
+            wartosc = swiat.tablica[i][j];
+
+            if(wartosc == '^')
+            {
+                fprintf(plik, "%i %i \n", i, j);
+            }
+
+
+        } //fprintf(plik, "\n");
+    }
+
+    return;
+}
+
+void czysc_ekran(void)
+{
+   system("cls");
+   return;
+}
