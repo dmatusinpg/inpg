@@ -76,7 +76,7 @@ void decyzja_o_zamianie_pokolen(informacje stare_pokolenie, informacje *nowe_pok
 
     *nowe_pokolenie = pomocnicza;
 
-    return;
+    return NULL;
 }
 
 

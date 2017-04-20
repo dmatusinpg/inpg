@@ -19,6 +19,7 @@ int main(void)
     informacje stare_pokolenie;
     int i;
     char znak;
+    char siema;
 
     nowe_pokolenie.kolumna = K;
     nowe_pokolenie.wiersz = W;

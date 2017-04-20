@@ -3,7 +3,11 @@
 #include "array.h"
 
 
-hkjjh
+hrej
+
+
+
+
 
 char **stworz_swiat(int wiersz, int kol)
 {
@@ -95,6 +99,7 @@ void powieksz_swiat_w_strukturze(informacje *swiat, int nwiersz, int nkol)
     *swiat = pswiat;
 
     return;
+    
 }
 
 void usun_swiat(char ***tablica, int wiersz)
