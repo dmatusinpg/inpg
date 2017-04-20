@@ -1,0 +1,62 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "array.h"
+#include "array.c"
+#include "generation.h"
+#include "generation.c"
+#include <windows.h>
+/*#include <unistd.h> dla linuxa */
+#define W 22
+#define K 80
+
+int main(void)
+{
+    FILE* dane_wyjsciowe;
+    informacje nowe_pokolenie;
+    informacje stare_pokolenie;
+    int i;
+    char znak;
+
+    nowe_pokolenie.kolumna = K;
+    nowe_pokolenie.wiersz = W;
+    stare_pokolenie.kolumna = K;
+    stare_pokolenie.wiersz = W;
+
+    stworz_swiat_w_strukturze(&nowe_pokolenie);
+    stworz_swiat_w_strukturze(&stare_pokolenie);
+
+    wczytaj_dane(&nowe_pokolenie);
+    wczytaj_dane(&stare_pokolenie);
+
+    czysc_ekran();
+    wypisz_swiat(stare_pokolenie);
+
+   do{
+        for(i = 0; i < 10; i++)
+        {
+            czysc_ekran();
+            decyzja_o_zamianie_pokolen(stare_pokolenie, &nowe_pokolenie);
+            wypisz_swiat(nowe_pokolenie);
+            Sleep(3); /*usleep(500) dla linuxa*/
+            zamien_pokolenia(&stare_pokolenie, &nowe_pokolenie);
+            czysc_ekran();
+        }
+
+        wypisz_swiat(stare_pokolenie);
+        scanf("%c", &znak);
+        getchar();
+    } while ((znak != 'k') && (znak != 'K'));
+
+    dane_wyjsciowe = fopen("wyjscie.txt", "r+");
+
+    if(dane_wyjsciowe == NULL)
+        return -1;
+
+    zapisz_dane(dane_wyjsciowe, stare_pokolenie);
+    fclose(dane_wyjsciowe);
+
+    usun_swiat_w_strukturze(&stare_pokolenie);
+    //usun_swiat_w_strukturze(&nowe_pokolenie);
+
+    return 0;
+}
