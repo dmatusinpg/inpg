@@ -2,6 +2,9 @@
 #define generation
 #include "array.h"
 
+
+vdcf
+
 void decyzja_o_zamianie_pokolen(informacje stare_pokolenie, informacje *nowe_pokolenie);
 void zamien_pokolenia(informacje *stare_pokolenie, informacje *nowe_pokolenie);
 
