@@ -34,6 +34,7 @@ char **stworz_swiat(int wiersz, int kol)
 
     return tablica;
 
+
 }
 
 void stworz_swiat_w_strukturze (informacje *swiat)
